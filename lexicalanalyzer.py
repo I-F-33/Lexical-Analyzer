@@ -20,22 +20,19 @@ def lex():
 
         token_stream = []
 
-        print(code)
         pos = 0
         max_pos = len(code)
 
         while pos < max_pos:
 
             c = code[pos]
-
-            #print(c)
             pos += 1
 
             state = dfa.analyze(c)
 
-            print(c , state)
+            #print(c , state)
             
-            #if this is a comment check for new line
+            #if this is a comment check for new line so we can add to token stream
             if state == 6:
                 
                 
