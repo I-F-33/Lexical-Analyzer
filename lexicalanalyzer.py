@@ -85,10 +85,7 @@ def lex():
                     case '*':
                         token_stream.append(t.Token.MULTIPLY.name)
                     case '/':
-                        if pos != max_pos and code[pos] == 'n':
-                            pass
-                        else:
-                            token_stream.append(t.Token.DIVIDE.name)
+                        token_stream.append(t.Token.DIVIDE.name)
                     case '%':
                         token_stream.append(t.Token.MODULUS.name)
                     case '<':
@@ -127,6 +124,9 @@ def lex():
                             pos += 1
                         else:
                             token_stream.append(t.Token.BIT_OR.name)
+                    case '\\':
+                        if pos != max_pos and code[pos] == 'n':
+                            pos += 1
                     case _:
                         pass
 
