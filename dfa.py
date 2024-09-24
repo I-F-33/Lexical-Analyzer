@@ -87,6 +87,8 @@ class DFA:
             elif self.state == 4:
                 if char.isdigit():
                     self.state = 4
+                else:
+                    self.state = 30
             
             
         return self.state
