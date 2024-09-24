@@ -15,10 +15,10 @@ KEYWORDS = [
 
 def lex():
 
-    tokens = []
-
     with open('code.txt', 'r') as code:
         dfa = d.DFA()
+
+        tokens = []
 
         for line in code:
             pos = 0
@@ -27,10 +27,13 @@ def lex():
             while pos < max_pos:
 
                 c = line[pos]
+
+                #print(c)
                 pos += 1
 
                 state = dfa.analyze(c)
 
+                print(state)
                 #if this is a space not in a comment
                 if state == 31:
                     last_success_state = dfa.get_last_success_state()
@@ -52,74 +55,74 @@ def lex():
 
                     match c:
                         case '(':
-                            tokens.append(Token.LEFT_PAREN)
+                            tokens.append(Token.LEFT_PAREN.name)
                         case ')':
-                            tokens.append(Token.RIGHT_PAREN)
+                            tokens.append(Token.RIGHT_PAREN.name)
                         case '[':
-                            tokens.append(Token.LEFT_BRACKET)
+                            tokens.append(Token.LEFT_BRACKET.name)
                         case ']':
-                            tokens.append(Token.RIGHT_BRACKET)
+                            tokens.append(Token.RIGHT_BRACKET.name)
                         case '{':
-                            tokens.append(Token.LEFT_BRACE)
+                            tokens.append(Token.LEFT_BRACE.name)
                         case '}':
-                            tokens.append(Token.RIGHT_BRACE)
+                            tokens.append(Token.RIGHT_BRACE.name)
                         case '.':
-                            tokens.append(Token.DOT)
+                            tokens.append(Token.DOT.name)
                         case '+':
                             if pos != max_pos and line[pos] == '+':
-                                tokens.append(Token.INCREMENT)
+                                tokens.append(Token.INCREMENT.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.PLUS)
+                                tokens.append(Token.PLUS.name)
                         case '-':
                             if pos != max_pos and line[pos] == '-':
 
-                                tokens.append(Token.DECREMENT)
+                                tokens.append(Token.DECREMENT.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.MINUS)
+                                tokens.append(Token.MINUS.name)
                         case '*':
-                            tokens.append(Token.MULTIPLY)
+                            tokens.append(Token.MULTIPLY.name)
                         case '/':
-                            tokens.append(Token.DIVIDE)
+                            tokens.append(Token.DIVIDE.name)
                         case '%':
-                            tokens.append(Token.MODULUS)
+                            tokens.append(Token.MODULUS.name)
                         case '<':
                             if pos != max_pos and line[pos] == '=':
-                                tokens.append(Token.LESS_THAN_EQ)
+                                tokens.append(Token.LESS_THAN_EQ.name)
                                 pos += 1
                             else:    
-                                tokens.append(Token.LESS_THAN)
+                                tokens.append(Token.LESS_THAN.name)
                         case '>':
                             if pos != max_pos and line[pos] == '=':
-                                tokens.append(Token.GREATER_THAN_EQ)
+                                tokens.append(Token.GREATER_THAN_EQ.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.GREATER_THAN)
+                                tokens.append(Token.GREATER_THAN.name)
                         case '=':
                             if pos != max_pos and line[pos] == '=':
-                                tokens.append(Token.LOGIC_EQUAL)
+                                tokens.append(Token.LOGIC_EQUAL.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.ASSIGNMENT)
+                                tokens.append(Token.ASSIGNMENT.name)
                         case ';':
-                            tokens.append(Token.SEMICOLON)
+                            tokens.append(Token.SEMICOLON.name)
                         case ',':
-                            tokens.append(Token.COMMA)
+                            tokens.append(Token.COMMA.name)
                         case '!':
-                            tokens.append(Token.LOGIC_NOT)
+                            tokens.append(Token.LOGIC_NOT.name)
                         case '&':
                             if pos != max_pos and line[pos] == '&':
-                                tokens.append(Token.LOGIC_AND)
+                                tokens.append(Token.LOGIC_AND.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.BIT_AND)
+                                tokens.append(Token.BIT_AND.name)
                         case '|':
                             if pos != max_pos and line[pos] == '|':
-                                tokens.append(Token.LOGIC_OR)
+                                tokens.append(Token.LOGIC_OR.name)
                                 pos += 1
                             else:
-                                tokens.append(Token.BIT_OR)
+                                tokens.append(Token.BIT_OR.name)
                         case _:
                             pass
     
@@ -128,7 +131,9 @@ def lex():
 
 def main():
     tokens = lex()
-    
+
+    print(tokens)
+
     
 
 
