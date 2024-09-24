@@ -13,7 +13,7 @@ class DFA:
             8: tokens.Token.IDENTIFIER,
             9: tokens.Token.IDENTIFIER
         }
-        pass
+        
 
     def analyze(self, char):
         ascii_value = ord(char)

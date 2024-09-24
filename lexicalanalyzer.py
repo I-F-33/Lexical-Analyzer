@@ -5,8 +5,6 @@ import dfa as d
 nextToken = 0
 nextChar = ''
 
-tokens = []
-
 #print(Token.PLUS.name) print(Token.PLUS.value)
 
 KEYWORDS = [
@@ -16,10 +14,13 @@ KEYWORDS = [
 
 
 def lex():
+
+    tokens = []
+
     with open('code.txt', 'r') as code:
         dfa = d.DFA()
 
-        for line in code.splitlines(keepends=True):
+        for line in code:
             pos = 0
             max_pos = len(line)
 
