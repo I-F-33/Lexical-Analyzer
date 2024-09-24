@@ -34,8 +34,18 @@ def lex():
             state = dfa.analyze(c)
 
             print(c , state)
-            #if this is a space not in a comment
-            if state == 31:
+            
+            #if this is a comment check for new line
+            if state == 6:
+                
+                
+                if (pos + 1) < max_pos and code[pos] == '\\' and code[pos + 1] == 'n':
+                    pos += 2
+                    dfa.reset()
+                    token_stream.append(t.Token.COMMENT.name)
+
+            #if this is a space not in a comment    
+            elif state == 31:
                 last_success_state = dfa.get_last_success_state()
 
                 #if there was a success state before this space

@@ -20,7 +20,7 @@ class DFA:
 
         
         #if SPACE AND NOT COMMENT THEN CODE IS 31
-        if ascii_value == 32 and (self.state != 5 or self.state != 6):
+        if ascii_value == 32 and (self.state != 5 and self.state != 6):
             self.state = 31
         
         else:

@@ -1,12 +1,27 @@
-int main(void)
+int main()
 {
-float myFloat = 0.01;
-int counter = 0;
-while (counter < 5)
+int myResult1 = 0;
+int arraySize = 5;
+int myArray[arraySize] = {1,2,3,4,5};
+// this is a for loop
+for (int i = 0; i < arraySize; ++i)
 {
-++counter;
-myFloat = myFloat * 3;
+if (myArray[i] % 2 == 0)
+{
+myResult++;
 }
-counter > myFloat;
+else
+{
+myResult--;
+}
+}
+if (myResult >= 0)
+{
+continue;
+}
+else
+{
+myResult = myResult * (-1);
+}
 return 0;
 }
