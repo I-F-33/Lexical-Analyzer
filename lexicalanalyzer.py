@@ -122,11 +122,14 @@ def lex():
                                 tokens.append(Token.BIT_OR)
                         case _:
                             pass
+    
+    return tokens
 
 
 def main():
-    lex()
-    print(tokens)
+    tokens = lex()
+    
+    
 
 
 if __name__ == '__main__':

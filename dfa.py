@@ -97,5 +97,5 @@ class DFA:
     
     def get_last_success_state(self):
 
-        return self.get_last_success_state()
+        return self.last_success_state()
     
