@@ -1,54 +1,67 @@
-from enum import Enum
+import tokens as Token
+import dfa as DFA
 
 #Global Vars Define
 nextToken = 0
 nextChar = ''
 
-class Token(Enum):
-    IDENTIFIER = 1
-    NUMBER = 2
-    COMMENT = 3
-    LEFT_PAREN = 4
-    RIGHT_PAREN = 5
-    LEFT_BRACKET = 6
-    RIGHT_BRACKET = 7
-    LEFT_BRACE = 8
-    RIGHT_BRACE = 9
-    DOT = 10
-    PLUS = 11
-    MINUS = 12
-    MULTIPLY = 13
-    DIVIDE = 14
-    MODULUS = 15
-    LESS_THAN = 16
-    GREATER_THAN = 17
-    ASSIGNMENT = 18
-    SEMICOLON = 19
-    COMMA = 20
-    INCREMENT = 21
-    DECREMENT = 22
-    LESS_THAN_EQ = 23
-    GREATER_THAN_EQ = 24
-    LOGIC_EQUAL = 25
-    LOGIC_AND = 26
-    LOGIC_OR = 27
-    LOGIC_NOT = 28
-    BIT_AND = 29
-    BIT_OR = 30
+tokens = []
 
-    #print(Token.PLUS.name) print(Token.PLUS.value)
+#print(Token.PLUS.name) print(Token.PLUS.value)
 
 KEYWORDS = [
     'int', 'float', 'char', 'main', 'return', 'while', 'for', 'break',
     'if', 'else', 'goto', 'continue', 'switch', 'case', 'unsigned', 'void'
 ]
 
-def getInput():
-    return input('Enter Program:')
+
+def lex():
+    with open('code.txt', 'r') as code:
+        dfa = DFA()
+
+        increment_flag = 0
+        decrement_flag = 0
+
+        for line in code.splitlines(keepends=True):
+            for c in line:
+                state = dfa.analyze(c)
+
+                #if this is a space not in a comment
+                if state == 31:
+                    last_success_state = dfa.get_last_success_state()
+                    tokens.append(dfa.get_token(last_success_state))
+                    continue
+                #if this is a special character not in the dfa
+                elif state == 32:
+                    last_success_state = dfa.get_last_success_state()
+
+                    #if increment or decrement then add identifier to tokens list
+                    if last_success_state != 0:
+                        tokens.append(dfa.get_token(last_success_state))
+                    else:
+                        match c:
+                            case '(':
+                                tokens.append(Token.LEFT_PAREN)
+                            case ')':
+                                tokens.append(Token.RIGHT_PAREN)
+                            case '[':
+                                tokens.append(Token.LEFT_BRACKET)
+                            case ']':
+                                tokens.append(Token.RIGHT_BRACKET)
+                            case '{':
+                                tokens.append(Token.LEFT_BRACE)
+                            case '}':
+                                tokens.append(Token.RIGHT_BRACE)
+                            case '.':
+                                tokens.append(Token.DOT)
+                            
+                    
 
 
-def lex(program):
-    pass
+
+                
+
+
 
 def lookup(ch):
     EOF = -1
