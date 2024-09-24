@@ -1,3 +1,5 @@
+from enum import Enum 
+
 class Token(Enum):
     IDENTIFIER = 1
     NUMBER = 2

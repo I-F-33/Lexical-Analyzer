@@ -1,5 +1,5 @@
 import tokens as Token
-import dfa as DFA
+import dfa as d
 
 #Global Vars Define
 nextToken = 0
@@ -17,97 +17,115 @@ KEYWORDS = [
 
 def lex():
     with open('code.txt', 'r') as code:
-        dfa = DFA()
-
-        increment_flag = 0
-        decrement_flag = 0
+        dfa = d.DFA()
 
         for line in code.splitlines(keepends=True):
-            for c in line:
+            pos = 0
+            max_pos = len(line)
+
+            while pos < max_pos:
+
+                c = line[pos]
+                pos += 1
+
                 state = dfa.analyze(c)
 
                 #if this is a space not in a comment
                 if state == 31:
                     last_success_state = dfa.get_last_success_state()
-                    tokens.append(dfa.get_token(last_success_state))
-                    continue
-                #if this is a special character not in the dfa
-                elif state == 32:
-                    last_success_state = dfa.get_last_success_state()
 
-                    #if increment or decrement then add identifier to tokens list
+                    #if there was a success state before this space
                     if last_success_state != 0:
                         tokens.append(dfa.get_token(last_success_state))
-                    else:
-                        match c:
-                            case '(':
-                                tokens.append(Token.LEFT_PAREN)
-                            case ')':
-                                tokens.append(Token.RIGHT_PAREN)
-                            case '[':
-                                tokens.append(Token.LEFT_BRACKET)
-                            case ']':
-                                tokens.append(Token.RIGHT_BRACKET)
-                            case '{':
-                                tokens.append(Token.LEFT_BRACE)
-                            case '}':
-                                tokens.append(Token.RIGHT_BRACE)
-                            case '.':
-                                tokens.append(Token.DOT)
-                            
-                    
+                        continue
+                #if this is a special character not in the dfa
+                elif state == 32:
 
+                    last_success_state = dfa.get_last_success_state()
 
+                    #if there was a success state before this special character
+                    #mainly for identifier  preceding increment or decrement
+                    if last_success_state != 0:
+                        tokens.append(dfa.get_token(last_success_state))
+                        continue
 
-                
+                    match c:
+                        case '(':
+                            tokens.append(Token.LEFT_PAREN)
+                        case ')':
+                            tokens.append(Token.RIGHT_PAREN)
+                        case '[':
+                            tokens.append(Token.LEFT_BRACKET)
+                        case ']':
+                            tokens.append(Token.RIGHT_BRACKET)
+                        case '{':
+                            tokens.append(Token.LEFT_BRACE)
+                        case '}':
+                            tokens.append(Token.RIGHT_BRACE)
+                        case '.':
+                            tokens.append(Token.DOT)
+                        case '+':
+                            if pos != max_pos and line[pos] == '+':
+                                tokens.append(Token.INCREMENT)
+                                pos += 1
+                            else:
+                                tokens.append(Token.PLUS)
+                        case '-':
+                            if pos != max_pos and line[pos] == '-':
 
-
-
-def lookup(ch):
-    EOF = -1
-    global nextToken
-    
-    if ch == '(':
-        addChar()
-        nextToken = LEFT_PAREN
-    elif ch == ')':
-        addChar()
-        nextToken = RIGHT_PAREN
-    elif ch == '+':
-        addChar()
-        nextToken = ADD_OP
-    elif ch == '-':
-        addChar()
-        nextToken = SUB_OP
-    elif ch == '*':
-        addChar()
-        nextToken = MULT_OP
-    elif ch == '/':
-        addChar()
-        nextToken = DIV_OP
-    else:
-        addChar()
-        nextToken = EOF
-
-    return nextToken
-
-def addChar():
-    pass
-
-def getChar(program):
-    return program.pop(0)
-
-def getNonBlank():
-    pass
+                                tokens.append(Token.DECREMENT)
+                                pos += 1
+                            else:
+                                tokens.append(Token.MINUS)
+                        case '*':
+                            tokens.append(Token.MULTIPLY)
+                        case '/':
+                            tokens.append(Token.DIVIDE)
+                        case '%':
+                            tokens.append(Token.MODULUS)
+                        case '<':
+                            if pos != max_pos and line[pos] == '=':
+                                tokens.append(Token.LESS_THAN_EQ)
+                                pos += 1
+                            else:    
+                                tokens.append(Token.LESS_THAN)
+                        case '>':
+                            if pos != max_pos and line[pos] == '=':
+                                tokens.append(Token.GREATER_THAN_EQ)
+                                pos += 1
+                            else:
+                                tokens.append(Token.GREATER_THAN)
+                        case '=':
+                            if pos != max_pos and line[pos] == '=':
+                                tokens.append(Token.LOGIC_EQUAL)
+                                pos += 1
+                            else:
+                                tokens.append(Token.ASSIGNMENT)
+                        case ';':
+                            tokens.append(Token.SEMICOLON)
+                        case ',':
+                            tokens.append(Token.COMMA)
+                        case '!':
+                            tokens.append(Token.LOGIC_NOT)
+                        case '&':
+                            if pos != max_pos and line[pos] == '&':
+                                tokens.append(Token.LOGIC_AND)
+                                pos += 1
+                            else:
+                                tokens.append(Token.BIT_AND)
+                        case '|':
+                            if pos != max_pos and line[pos] == '|':
+                                tokens.append(Token.LOGIC_OR)
+                                pos += 1
+                            else:
+                                tokens.append(Token.BIT_OR)
+                        case _:
+                            pass
 
 
 def main():
-    ins = getInput()
-
-    for c in ins:
-        print('\n', c)
-
-    print('Done')
+    lex()
+    print(tokens)
 
 
 if __name__ == '__main__':
