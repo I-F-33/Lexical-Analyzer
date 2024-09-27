@@ -1,5 +1,7 @@
 import tokens as t
 import dfa as d
+import re
+from token_lexeme import Token_Lexeme 
 
 class LexicalAnalyzer:
 
@@ -146,6 +148,13 @@ class LexicalAnalyzer:
     def get_keywords(self):
         return self.keywords
         
+    def get_token_for_lexeme(self, lexeme):
+        for token_name in dir(Token_Lexeme):
+            token_pattern = getattr(Token_Lexeme, token_name)
 
+            if re.fullmatch(token_pattern, lexeme):
+                return token_name 
+
+        return "INVALID_TOKEN" 
 
 
