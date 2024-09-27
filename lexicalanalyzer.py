@@ -155,6 +155,4 @@ class LexicalAnalyzer:
             if re.fullmatch(token_pattern, lexeme):
                 return token_name 
 
-        return "INVALID_TOKEN" 
-
-
+        return "INVALID_TOKEN"
