@@ -1,0 +1,7 @@
+
+    int main() {
+        int 1stint = 0;
+        char myChar2;
+        return 0;
+    }
+    

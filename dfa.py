@@ -5,8 +5,9 @@ class DFA:
         self.start_state = 1
         self.state = self.start_state
         self.last_success_state = 0
-        self.accept_states = {3,4,8,9,10}
+        self.accept_states = {2,3,4,8,9,10}
         self.state_tokens = {
+            2: tokens.Token.DIVIDE.name,
             3: tokens.Token.IDENTIFIER.name,
             4: tokens.Token.NUMBER.name,
             8: tokens.Token.COMMENT.name,
@@ -28,7 +29,7 @@ class DFA:
             #Start state
             if self.state == 1:
                 if char == '/':
-                    self.state = 2
+                    self.last_success_state = self.state = 2
                 elif char.isalpha():
                     self.last_success_state =  self.state = 3
                 elif char.isdigit():
@@ -94,7 +95,7 @@ class DFA:
         return self.state
 
     def reset(self):
-        self.state = self.start_state
+        self.last_success_state = self.state = self.start_state
 
 
     def is_accept_state(self, state):

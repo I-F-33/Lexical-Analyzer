@@ -1,46 +1,48 @@
 import lexicalanalyzer as la
-from token_lexeme import Token_Lexeme
 
 # Case 1: Feeding the lexer a lexeme stream from a file
 def test_case_1():
     lexer = la.LexicalAnalyzer()
 
-    lexemes = [
-        "Variable",   # Identifier
-        "12345",      # Number
-        "// This is a comment",  # Comment
-        "(",          # Left Parenthesis
-        ")",          # Right Parenthesis
-        "[",          # Left Bracket
-        "]",          # Right Bracket
-        "{",          # Left Brace
-        "}",          # Right Brace
-        ".",          # Dot
-        "+",          # Plus
-        "-",          # Minus
-        "*",          # Multiply
-        "/",          # Divide
-        "%",          # Modulus
-        "<",          # Less Than
-        ">",          # Greater Than
-        "=",          # Assignment
-        ";",          # Semicolon
-        ",",          # Comma
-        "++",         # Increment
-        "--",         # Decrement
-        "<=",         # Less Than or Equal
-        ">=",         # Greater Than or Equal
-        "==",         # Logic Equal
-        "&&",         # Logic And
-        "||",         # Logic Or
-        "!",          # Logic Not
-        "&",          # Bit And
-        "|",          # Bit Or
-    ]
+    lexemes = """
+        Variables
+        12345     
+        // This is a comment
+        (
+        )
+        [        
+        ]       
+        {
+        }
+        .
+        +
+        -
+        *
+        /
+        %
+        <
+        >
+        =
+        ;
+        ,
+        ++
+        --
+        <=
+        >=
+        ==
+        &&
+        ||
+        !
+        &
+        |
+    """
 
-    for lexeme in lexemes:
-        token = lexer.get_token_for_lexeme(lexeme)
-        print(f"{token} -> '{lexeme}'")
+    with open("test_case_1.txt", "w") as f:
+        f.write(lexemes)
+    
+    lexer.lex("test_case_1.txt")
+    print(lexer.get_token_stream())
+
 
 
 # Case 2: 
