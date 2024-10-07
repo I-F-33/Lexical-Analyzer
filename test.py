@@ -1,8 +1,8 @@
-import lexicalanalyzer as la
+from lexicalanalyzer import LexicalAnalyzer 
 
 # Case 1: Feeding the lexer a lexeme stream from a file
 def test_case_1():
-    lexer = la.LexicalAnalyzer()
+    lexer = LexicalAnalyzer()
 
     lexemes = """
         Variables
@@ -47,7 +47,7 @@ def test_case_1():
 
 # Case 2: 
 def test_case_2():
-    lexer = la.LexicalAnalyzer()
+    lexer = LexicalAnalyzer()
     code = """
     int main() {
         int myInt = 0;
@@ -60,11 +60,14 @@ def test_case_2():
         f.write(code)
 
     lexer.lex("test_case_2.txt")
-    print(lexer.get_token_stream())
+    tokens = lexer.get_token_stream()
+
+    for token in tokens:
+        print(token.to_string())
 
 # Case 3: 
 def test_case_3():
-    lexer = la.LexicalAnalyzer()
+    lexer = LexicalAnalyzer()
     code = """
     int main() {
         int 1stint = 0;
@@ -76,11 +79,14 @@ def test_case_3():
         f.write(code)
 
     lexer.lex("test_case_3.txt")
-    print(lexer.get_token_stream())
+    tokens = lexer.get_token_stream()
+
+    for token in tokens:
+        print(token.to_string())
 
 # Case 4: 
 def test_case_4():
-    lexer = la.LexicalAnalyzer()
+    lexer = LexicalAnalyzer()
     code = """
     int main(void) {
         float myFloat = 0.01;
@@ -97,11 +103,14 @@ def test_case_4():
         f.write(code)
 
     lexer.lex("test_case_4.txt")
-    print(lexer.get_token_stream())
+    tokens = lexer.get_token_stream()
+
+    for token in tokens:
+        print(token.to_string())
 
 # Case 5: 
 def test_case_5():
-    lexer = la.LexicalAnalyzer()
+    lexer = LexicalAnalyzer()
     code = """
     int main() {
         int myResult = 0;
@@ -127,22 +136,25 @@ def test_case_5():
         f.write(code)
 
     lexer.lex("test_case_5.txt")
-    print(lexer.get_token_stream())
+    tokens = lexer.get_token_stream()
+
+    for token in tokens:
+        print(token.to_string())
 
 
 if __name__ == "__main__":
-    print("Test Case 1:")
-    print("TOKEN -> LEXEME\n")
-    test_case_1()
+    # print("Test Case 1:")
+    # print("TOKEN -> LEXEME\n")
+    # test_case_1()
 
-    print("\nTest Case 2:")
-    test_case_2()
+    # print("\nTest Case 2:")
+    # test_case_2()
 
-    print("\nTest Case 3:")
-    test_case_3()
+    # print("\nTest Case 3:")
+    # test_case_3()
 
-    print("\nTest Case 4:")
-    test_case_4()
+    # print("\nTest Case 4:")
+    # test_case_4()
 
     print("\nTest Case 5:")
     test_case_5()

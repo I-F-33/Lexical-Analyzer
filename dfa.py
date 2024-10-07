@@ -1,4 +1,4 @@
-import tokens 
+import tokens.token_type as t 
 class DFA:
 
     def __init__(self):
@@ -7,12 +7,12 @@ class DFA:
         self.last_success_state = 0
         self.accept_states = {2,3,4,8,9,10}
         self.state_tokens = {
-            2: tokens.Token.DIVIDE.name,
-            3: tokens.Token.IDENTIFIER.name,
-            4: tokens.Token.NUMBER.name,
-            8: tokens.Token.COMMENT.name,
-            9: tokens.Token.IDENTIFIER.name,
-            10: tokens.Token.IDENTIFIER.name
+            2: t.Token_type.DIVIDE.name,
+            3: t.Token_type.IDENTIFIER.name,
+            4: t.Token_type.NUMBER.name,
+            8: t.Token_type.COMMENT.name,
+            9: t.Token_type.IDENTIFIER.name,
+            10: t.Token_type.IDENTIFIER.name
         }
         
 

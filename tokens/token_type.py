@@ -1,6 +1,6 @@
 from enum import Enum 
 
-class Token(Enum):
+class Token_type(Enum):
     IDENTIFIER = 1
     NUMBER = 2
     COMMENT = 3
