@@ -8,7 +8,7 @@ class LexicalAnalyzer:
         self.dfa = DFA()
         self.keywords = [
         'int', 'float', 'char', 'main', 'return', 'while', 'for', 'break',
-        'if', 'else', 'goto', 'continue', 'switch', 'case', 'unsigned', 'void'
+        'if', 'else', 'goto', 'continue', 'switch', 'case', 'unsigned', 'void', 'do'
         ]
         self.token_stream = []
 
@@ -23,11 +23,16 @@ class LexicalAnalyzer:
             pos = 0
             max_pos = len(code)
 
-            
+            #if capturing a character sequence then turn on
             capture_flag = False
+
+            #start of captured character sequence
             identifier_start = 0
+
+            #line in code
             line = 1
 
+            #while there are still characters to read
             while pos < max_pos:
                 
                 c = code[pos]
@@ -35,6 +40,8 @@ class LexicalAnalyzer:
 
                 state = self.dfa.analyze(c)
 
+                #if we are in the number or identifier branch
+                #then set the capture flag and mark the position as the start of the identifier
                 if state == 3 or state == 4:
                     if not capture_flag:
                         identifier_start = pos
@@ -42,12 +49,11 @@ class LexicalAnalyzer:
 
 
                 pos += 1
-                #print(c , state)
                 
-                #if this is a comment check for new line so we can add to token stream
+                #if we are in the comment branch then check to see if we encountered a newline 
                 if state == 6:
                     
-                    
+                    #if theres a new line break then add comment token to token stream
                     if (pos + 1) < max_pos and code[pos] == '\\' and code[pos + 1] == 'n':
                         pos += 2
                         self.dfa.reset()
@@ -59,18 +65,14 @@ class LexicalAnalyzer:
                     last_success_state = self.dfa.get_last_success_state()
 
                     #if there was a success state before this space
+                    #then add its respective token to the token stream 
                     if last_success_state != 0:
-                        if last_success_state == 3 or last_success_state == 9 or last_success_state == 10:
-                            self.token_stream.append(Token(Token_type.IDENTIFIER.name, code[identifier_start:pos-1]))
-                            #print(code[identifier_start:pos-1])
-                        elif last_success_state == 4:
-                            self.token_stream.append(Token(Token_type.NUMBER.name, code[identifier_start:pos-1]))
-                           # print(code[identifier_start:pos-1])
-                        elif last_success_state == 2:
-                            self.token_stream.append(Token(Token_type.DIVIDE.name))
-                            #print(code[identifier_start:pos-1])
+                        
+                        identifier = code[identifier_start:pos-1]
+                        self._add_success_token(last_success_state, identifier)
                         identifier_start = 0
                         capture_flag = False
+
                     self.dfa.reset()
                     
                 #if this is a special character not in the dfa
@@ -78,22 +80,17 @@ class LexicalAnalyzer:
 
                     last_success_state = self.dfa.get_last_success_state()
                     self.dfa.reset()
+
                     #if there was a success state before this special character
-                    #mainly for identifier  preceding increment or decrement
+                    #then add its respective toke into the token stream
                     if last_success_state != 0:
-                        if last_success_state == 3 or last_success_state == 9 or last_success_state == 10:
-                            self.token_stream.append(Token(Token_type.IDENTIFIER.name, code[identifier_start:pos-1]))
-                           # print(code[identifier_start:pos-1])
-                        elif last_success_state == 4:
-                            self.token_stream.append(Token(Token_type.NUMBER.name, code[identifier_start:pos-1]))
-                            #print(code[identifier_start:pos-1])
-                        elif last_success_state == 2:
-                            self.token_stream.append(Token(Token_type.DIVIDE.name))
-                            #print(code[identifier_start:pos-1])
+
+                        identifier = code[identifier_start:pos-1]
+                        self._add_success_token(last_success_state, identifier)
                         identifier_start = 0
                         capture_flag = False
                     
-
+                    #match the character with its appropriate token
                     match c:
                         case '(':
                             self.token_stream.append(Token(Token_type.LEFT_PAREN.name))
@@ -151,7 +148,11 @@ class LexicalAnalyzer:
                         case ',':
                             self.token_stream.append(Token(Token_type.COMMA.name))
                         case '!':
-                            self.token_stream.append(Token(Token_type.LOGIC_NOT.name))
+                            if pos < max_pos and code[pos] == '=':
+                                self.token_stream.append(Token(Token_type.LOGICAL_NOT_EQUAL))
+                                pos += 1
+                            else:
+                                self.token_stream.append(Token(Token_type.LOGIC_NOT.name))
                         case '&':
                             if pos < max_pos and code[pos] == '&':
                                 self.token_stream.append(Token(Token_type.LOGIC_AND.name))
@@ -181,4 +182,39 @@ class LexicalAnalyzer:
     
     def get_keywords(self):
         return self.keywords
+    
+    def _add_success_token(self, success_state, identifier):
+        '''
+        this function takes in a success state and a combination of characters successfully recognized as an identifier
+        if the identifier is in [int,float,char,void] then add a basic token
+        else add a regular identifier token
+
+        if its a number then add a number token
+
+        if its a division character then add divide token
+        '''
+
+        if success_state == 3 or success_state == 9 or success_state == 10:
+            match identifier:
+                case 'float' | 'int' | 'char' | 'void':
+                     self.token_stream.append(Token(Token_type.BASIC.name, identifier ))
+                case 'if':
+                    self.token_stream.append(Token(Token_type.IF.name, identifier ))
+                case 'else':
+                    self.token_stream.append(Token(Token_type.ELSE.name, identifier ))
+                case 'while':
+                    self.token_stream.append(Token(Token_type.WHILE.name, identifier ))
+                case 'main':
+                    self.token_stream.append(Token(Token_type.MAIN.name, identifier ))
+                case 'break':
+                    self.token_stream.append(Token(Token_type.BREAK.name, identifier ))
+                case 'do':
+                    self.token_stream.append(Token(Token_type.DO.name, identifier ))
+
+        elif success_state == 4:
+            self.token_stream.append(Token(Token_type.NUMBER.name, identifier))
+        elif success_state == 12:
+            self.token_stream.append(Token(Token_type.REAL.name, identifier))
+        elif success_state == 2:
+            self.token_stream.append(Token(Token_type.DIVIDE.name))
         

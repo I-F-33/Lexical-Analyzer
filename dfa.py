@@ -1,18 +1,19 @@
-import tokens.token_type as t 
+from tokens.token_type import Token_type
 class DFA:
 
     def __init__(self):
         self.start_state = 1
         self.state = self.start_state
         self.last_success_state = 0
-        self.accept_states = {2,3,4,8,9,10}
+        self.accept_states = {2,3,4,8,9,10,12}
         self.state_tokens = {
-            2: t.Token_type.DIVIDE.name,
-            3: t.Token_type.IDENTIFIER.name,
-            4: t.Token_type.NUMBER.name,
-            8: t.Token_type.COMMENT.name,
-            9: t.Token_type.IDENTIFIER.name,
-            10: t.Token_type.IDENTIFIER.name
+            2: Token_type.DIVIDE.name,
+            3: Token_type.IDENTIFIER.name,
+            4: Token_type.NUMBER.name,
+            8: Token_type.COMMENT.name,
+            9: Token_type.IDENTIFIER.name,
+            10: Token_type.IDENTIFIER.name,
+            12: Token_type.REAL.name
         }
         
 
@@ -88,6 +89,21 @@ class DFA:
             elif self.state == 4:
                 if char.isdigit():
                     self.state = 4
+                elif char == '.':
+                    self.state = 11
+                    self.last_success_state = 0
+                else:
+                    self.state = 30
+            
+            elif self.state == 11:
+                if char.isdigit():
+                    self.last_success_state = self.state = 12
+                else:
+                    self.state = 30
+            
+            elif self.state == 12:
+                if char.isdigit():
+                    self.state = 12
                 else:
                     self.state = 30
             

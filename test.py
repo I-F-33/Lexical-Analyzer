@@ -41,7 +41,10 @@ def test_case_1():
         f.write(lexemes)
     
     lexer.lex("test_case_1.txt")
-    print(lexer.get_token_stream())
+    tokens = lexer.get_token_stream()
+
+    for token in tokens:
+        print(token.to_string())
 
 
 
@@ -115,7 +118,7 @@ def test_case_5():
     int main() {
         int myResult = 0;
         int arraySize = 5;
-        int myArray[arraySize] = {1,2,3,4,5};
+        int myArray[arraySize] = {1.2,2,3.5,4,5};
         // this is a for loop
         for (int i = 0; i < arraySize; ++i) {
             if (myArray[i] % 2 == 0) {

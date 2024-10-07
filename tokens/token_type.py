@@ -31,3 +31,12 @@ class Token_type(Enum):
     LOGIC_NOT = 28
     BIT_AND = 29
     BIT_OR = 30
+    BASIC = 31
+    IF = 32
+    ELSE = 33
+    WHILE = 34
+    BREAK = 35
+    MAIN = 36
+    DO = 37
+    LOGICAL_NOT_EQUAL = 38
+    REAL = 39
