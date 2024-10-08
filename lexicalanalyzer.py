@@ -57,7 +57,7 @@ class LexicalAnalyzer:
                     if (pos + 1) < max_pos and code[pos] == '\\' and code[pos + 1] == 'n':
                         pos += 2
                         self.dfa.reset()
-                        self.token_stream.append(Token(Token_type.COMMENT.name))
+                        self.token_stream.append(Token(Token_type.COMMENT))
                         line += 1
 
                 #if this is a space not in a comment    
@@ -93,86 +93,86 @@ class LexicalAnalyzer:
                     #match the character with its appropriate token
                     match c:
                         case '(':
-                            self.token_stream.append(Token(Token_type.LEFT_PAREN.name))
+                            self.token_stream.append(Token(Token_type.LEFT_PAREN))
                         case ')':
-                            self.token_stream.append(Token(Token_type.RIGHT_PAREN.name))
+                            self.token_stream.append(Token(Token_type.RIGHT_PAREN))
                         case '[':
-                            self.token_stream.append(Token(Token_type.LEFT_BRACKET.name))
+                            self.token_stream.append(Token(Token_type.LEFT_BRACKET))
                         case ']':
-                            self.token_stream.append(Token(Token_type.RIGHT_BRACKET.name))
+                            self.token_stream.append(Token(Token_type.RIGHT_BRACKET))
                         case '{':
-                            self.token_stream.append(Token(Token_type.LEFT_BRACE.name))
+                            self.token_stream.append(Token(Token_type.LEFT_BRACE))
                         case '}':
-                            self.token_stream.append(Token(Token_type.RIGHT_BRACE.name))
+                            self.token_stream.append(Token(Token_type.RIGHT_BRACE))
                         case '.':
-                            self.token_stream.append(Token(Token_type.DOT.name))
+                            self.token_stream.append(Token(Token_type.DOT))
                         case '+':
                             #if we have an increment token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '+':
-                                self.token_stream.append(Token(Token_type.INCREMENT.name))
+                                self.token_stream.append(Token(Token_type.INCREMENT))
                                 pos += 1
                             else:#otherwise its a plus token
-                                self.token_stream.append(Token(Token_type.PLUS.name))
+                                self.token_stream.append(Token(Token_type.PLUS))
                         case '-':
                             #if we have a decrement token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '-':
 
-                                self.token_stream.append(Token(Token_type.DECREMENT.name))
+                                self.token_stream.append(Token(Token_type.DECREMENT))
                                 pos += 1
                             else:#otherwise its a minus token
-                                self.token_stream.append(Token(Token_type.MINUS.name))
+                                self.token_stream.append(Token(Token_type.MINUS))
                         case '*':
-                            self.token_stream.append(Token(Token_type.MULTIPLY.name))
+                            self.token_stream.append(Token(Token_type.MULTIPLY))
                         case '/':
-                            self.token_stream.append(Token(Token_type.DIVIDE.name))
+                            self.token_stream.append(Token(Token_type.DIVIDE))
                         case '%':
-                            self.token_stream.append(Token(Token_type.MODULUS.name))
+                            self.token_stream.append(Token(Token_type.MODULUS))
                         case '<':
                             #if we have a less than or equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Token(Token_type.LESS_THAN_EQ.name))
+                                self.token_stream.append(Token(Token_type.LESS_THAN_EQ))
                                 pos += 1
                             else:#otherwise its a less than token
-                                self.token_stream.append(Token(Token_type.LESS_THAN.name))
+                                self.token_stream.append(Token(Token_type.LESS_THAN))
                         case '>':
                             #if we have a greater than or equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Token(Token_type.GREATER_THAN_EQ.name))
+                                self.token_stream.append(Token(Token_type.GREATER_THAN_EQ))
                                 pos += 1
                             else:#otherwise its a greater than token
-                                self.token_stream.append(Token(Token_type.GREATER_THAN.name))
+                                self.token_stream.append(Token(Token_type.GREATER_THAN))
                         case '=':
                             #if we have an equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Token(Token_type.LOGIC_EQUAL.name))
+                                self.token_stream.append(Token(Token_type.LOGIC_EQUAL))
                                 pos += 1
                             else:#otherwise its an assignment token
-                                self.token_stream.append(Token(Token_type.ASSIGNMENT.name))
+                                self.token_stream.append(Token(Token_type.ASSIGNMENT))
                         case ';':
-                            self.token_stream.append(Token(Token_type.SEMICOLON.name))
+                            self.token_stream.append(Token(Token_type.SEMICOLON))
                         case ',':
-                            self.token_stream.append(Token(Token_type.COMMA.name))
+                            self.token_stream.append(Token(Token_type.COMMA))
                         case '!':
                             #if we have a not equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
                                 self.token_stream.append(Token(Token_type.LOGICAL_NOT_EQUAL))
                                 pos += 1
                             else: #otherwise its a logical not
-                                self.token_stream.append(Token(Token_type.LOGIC_NOT.name))
+                                self.token_stream.append(Token(Token_type.LOGIC_NOT))
                         case '&':
                             #if we have a double ampersand then its a logical and
                             if pos < max_pos and code[pos] == '&':
-                                self.token_stream.append(Token(Token_type.LOGIC_AND.name))
+                                self.token_stream.append(Token(Token_type.LOGIC_AND))
                                 pos += 1
                             else:#otherwise its a bit and
-                                self.token_stream.append(Token(Token_type.BIT_AND.name))
+                                self.token_stream.append(Token(Token_type.BIT_AND))
                         case '|':
                             #if we have a double pipe then add a logic or token
                             if pos < max_pos and code[pos] == '|':
-                                self.token_stream.append(Token(Token_type.LOGIC_OR.name))
+                                self.token_stream.append(Token(Token_type.LOGIC_OR))
                                 pos += 1
                             else:
-                                self.token_stream.append(Token(Token_type.BIT_OR.name))
+                                self.token_stream.append(Token(Token_type.BIT_OR))
                         case '\\':
                             if pos < max_pos and code[pos] == 'n':
                                 pos += 1
@@ -208,24 +208,24 @@ class LexicalAnalyzer:
         if success_state == 3 or success_state == 9 or success_state == 10:
             match identifier:
                 case 'float' | 'int' | 'char' | 'void':
-                     self.token_stream.append(Token(Token_type.BASIC.name, identifier ))
+                     self.token_stream.append(Token(Token_type.BASIC, identifier ))
                 case 'if':
-                    self.token_stream.append(Token(Token_type.IF.name, identifier ))
+                    self.token_stream.append(Token(Token_type.IF, identifier ))
                 case 'else':
-                    self.token_stream.append(Token(Token_type.ELSE.name, identifier ))
+                    self.token_stream.append(Token(Token_type.ELSE, identifier ))
                 case 'while':
-                    self.token_stream.append(Token(Token_type.WHILE.name, identifier ))
+                    self.token_stream.append(Token(Token_type.WHILE, identifier ))
                 case 'main':
-                    self.token_stream.append(Token(Token_type.MAIN.name, identifier ))
+                    self.token_stream.append(Token(Token_type.MAIN, identifier ))
                 case 'break':
-                    self.token_stream.append(Token(Token_type.BREAK.name, identifier ))
+                    self.token_stream.append(Token(Token_type.BREAK, identifier ))
                 case 'do':
-                    self.token_stream.append(Token(Token_type.DO.name, identifier ))
+                    self.token_stream.append(Token(Token_type.DO, identifier ))
 
         elif success_state == 4:
-            self.token_stream.append(Token(Token_type.NUMBER.name, identifier))
+            self.token_stream.append(Token(Token_type.NUMBER, identifier))
         elif success_state == 12:
-            self.token_stream.append(Token(Token_type.REAL.name, identifier))
+            self.token_stream.append(Token(Token_type.REAL, identifier))
         elif success_state == 2:
-            self.token_stream.append(Token(Token_type.DIVIDE.name))
+            self.token_stream.append(Token(Token_type.DIVIDE))
         

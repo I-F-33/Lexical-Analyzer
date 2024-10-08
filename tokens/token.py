@@ -6,7 +6,7 @@ class Token:
     
 
     def to_string(self):
-        return self.token_type + " " + self.lexeme
+        return self.token_type.name + " " + self.lexeme
     
     def get_type(self):
         return self.token_type
