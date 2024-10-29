@@ -26,8 +26,7 @@ class SymbolTable:
         return None
 
     def display(self):
-        print(f"{'Lexeme':<15}{'Token Type':<15}{'Value':<15}{'Line':<10}{'Start':<10}{'Length':<10}")
-        print("-" * 75)
+        print(f"{'Lexeme'}{'Token Type'}{'Value'}{'Line'}{'Start'}{'Length'}")
         for entry in self.table:
-            print(f"{entry['lexeme']:<15}{entry['token_type']:<15}{entry['value']:<15}"
-                  f"{entry['line_number']:<10}{entry['char_start']:<10}{entry['length']:<10}")
+            print(f"{entry['lexeme']}{entry['token_type']}{entry['value']}"
+                  f"{entry['line_number']}{entry['char_start']}{entry['length']}")
