@@ -18,8 +18,12 @@ class LexicalAnalyzer:
             code = file.read()
             code = code.replace("\n", "\\n")
 
-            
+            #position of character in program stream
             pos = 0
+
+            #position of character in line, will reset on every line break
+            #necessary for error messges
+            line_pos = 0
             max_pos = len(code)
 
             #if capturing a character sequence then turn on
@@ -48,6 +52,7 @@ class LexicalAnalyzer:
 
 
                 pos += 1
+                line_pos += 1
                 
                 #if we are in the comment branch then check to see if we encountered a newline 
                 if state == 6:
@@ -58,6 +63,7 @@ class LexicalAnalyzer:
                         self.dfa.reset()
                         self.token_stream.append(Comment())
                         line += 1
+                        line_pos = 0
 
                 #if this is a space not in a comment    
                 elif state == 31:
@@ -177,6 +183,7 @@ class LexicalAnalyzer:
                                 pos += 1
                                 #everytime we encounter a new line we increment the line number
                                 line += 1
+                                line_pos = 0
                         case _:
                             pass
         

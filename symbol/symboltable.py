@@ -1,3 +1,5 @@
+from symbol import Symbol
+
 class SymbolTable:
     _instance = None  # create singleton instance
 
@@ -8,16 +10,9 @@ class SymbolTable:
             cls._instance.table = []  # Initialize the symbol table
         return cls._instance
 
-    def add_symbol(self, lexeme, token_type, value, line_number, char_start, length):
-        symbol_entry = {
-            'lexeme': lexeme,
-            'token_type': token_type,
-            'value': value,
-            'line_number': line_number,
-            'char_start': char_start,
-            'length': length
-        }
-        self.table.append(symbol_entry)
+    def add_symbol(self):
+        self.table.append(Symbol)
+
 
     def lookup(self, lexeme):
         for entry in self.table:
