@@ -144,6 +144,8 @@ def test_case_5():
     for token in tokens:
         print(token.to_string())
 
+    lexer.print_symbol_table()
+
 
 if __name__ == "__main__":
     # print("Test Case 1:")

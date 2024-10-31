@@ -1,5 +1,6 @@
 from tokens.token import *
 from dfa import DFA
+from symbol.symboltable import *
 
 class LexicalAnalyzer:
 
@@ -10,6 +11,8 @@ class LexicalAnalyzer:
         'if', 'else', 'goto', 'continue', 'switch', 'case', 'unsigned', 'void', 'do'
         ]
         self.token_stream = []
+        self.SymbolTable = SymbolTable()
+
 
 
     def lex(self, filename):
@@ -74,7 +77,7 @@ class LexicalAnalyzer:
                     if last_success_state != 0:
                         
                         identifier = code[identifier_start:pos-1]
-                        self._add_success_token(last_success_state, identifier)
+                        self._add_success_token(last_success_state, identifier, line, line_pos)
                         identifier_start = 0
                         capture_flag = False
 
@@ -91,93 +94,184 @@ class LexicalAnalyzer:
                     if last_success_state != 0:
 
                         identifier = code[identifier_start:pos-1]
-                        self._add_success_token(last_success_state, identifier)
+                        self._add_success_token(last_success_state, identifier, line, line_pos)
                         identifier_start = 0
                         capture_flag = False
                     
                     #match the character with its appropriate token
                     match c:
                         case '(':
-                            self.token_stream.append(Left_paren())
+                            token = Left_paren()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case ')':
-                            self.token_stream.append(Right_paren())
+                            token = Right_paren()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '[':
-                            self.token_stream.append(Left_bracket())
+                            token = Left_bracket()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case ']':
-                            self.token_stream.append(Right_bracket())
+                            token = Right_bracket()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '{':
-                            self.token_stream.append(Left_brace())
+                            token = Left_brace()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '}':
-                            self.token_stream.append(Right_brace())
+                            token = Right_brace()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '.':
-                            self.token_stream.append(Dot())
+                            token = Dot()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '+':
                             #if we have an increment token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '+':
-                                self.token_stream.append(Increment())
+                                c+= code[pos]
+                                token = Increment()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its a plus token
-                                self.token_stream.append(Plus())
+                                token = Plus()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '-':
                             #if we have a decrement token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '-':
-
-                                self.token_stream.append(Decrement())
+                                c+= code[pos]
+                                token = Decrement()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its a minus token
-                                self.token_stream.append(Minus())
+                                token = Minus()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '*':
-                            self.token_stream.append(Multiply())
+                            token = Multiply()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '/':
-                            self.token_stream.append(Divide())
+                            token = Divide()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '%':
-                            self.token_stream.append(Modulus())
+                            token = Modulus()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '<':
                             #if we have a less than or equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Less_than_eq())
+                                c+= code[pos]
+                                token = Less_than_eq()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its a less than token
-                                self.token_stream.append(Less_than())
+                                token = Less_than()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '>':
                             #if we have a greater than or equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Greater_than_eq())
+                                c+= code[pos]
+                                token = Greater_than_eq()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its a greater than token
-                                self.token_stream.append(Greater_than())
+                                token = Greater_than()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '=':
                             #if we have an equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Logic_equal())
+                                c+= code[pos]
+                                token = Logic_equal()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its an assignment token
-                                self.token_stream.append(Assignment())
+                                token = Assignment()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case ';':
-                            self.token_stream.append(Semicolon())
+                            token = Semicolon()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case ',':
-                            self.token_stream.append(Comma())
+                            token = Comma()
+                            self.token_stream.append(token)
+                            symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                            self.SymbolTable.add_symbol(symbol)
                         case '!':
                             #if we have a not equal token then add it to the token stream and increment the position
                             if pos < max_pos and code[pos] == '=':
-                                self.token_stream.append(Logical_not_equal())
+                                c+= code[pos]
+                                token = Logical_not_equal()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else: #otherwise its a logical not
-                                self.token_stream.append(Logic_not())
+                                token = Logic_not()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '&':
                             #if we have a double ampersand then its a logical and
                             if pos < max_pos and code[pos] == '&':
-                                self.token_stream.append(Logic_and())
+                                c+= code[pos]
+                                token = Logic_and()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:#otherwise its a bit and
-                                self.token_stream.append(Bit_and())
+                                token = Bit_and()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '|':
                             #if we have a double pipe then add a logic or token
                             if pos < max_pos and code[pos] == '|':
-                                self.token_stream.append(Logic_or())
+                                c+= code[pos]
+                                token = Logic_or()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                                 pos += 1
                             else:
-                                self.token_stream.append(Bit_or())
+                                token = Bit_or()
+                                self.token_stream.append(token)
+                                symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                                self.SymbolTable.add_symbol(symbol)
                         case '\\':
                             if pos < max_pos and code[pos] == 'n':
                                 pos += 1
@@ -186,6 +280,10 @@ class LexicalAnalyzer:
                                 line_pos = 0
                         case _:
                             pass
+
+                    # self.token_stream.append(token)
+                    # symbol = Symbol(c, token.get_type(), line, line_pos, len(c))
+                    # self.SymbolTable.add_symbol(symbol)
         
 
     def reset(self):
@@ -198,7 +296,7 @@ class LexicalAnalyzer:
     def get_keywords(self):
         return self.keywords
     
-    def _add_success_token(self, success_state, identifier):
+    def _add_success_token(self, success_state, identifier, line, line_pos):
         '''
         this function takes in a success state and a combination of characters successfully recognized as an identifier
         if the identifier is in [int,float,char,void] then add a basic token
@@ -214,26 +312,43 @@ class LexicalAnalyzer:
         if success_state == 3 or success_state == 9 or success_state == 10:
             match identifier:
                 case 'float' | 'int' | 'char' | 'void':
-                     self.token_stream.append(Basic(identifier))
+                    token = Basic(identifier)
                 case 'if':
-                    self.token_stream.append(If())
+                    token = If()
                 case 'else':
-                    self.token_stream.append(Else())
+                    token = Else()
                 case 'while':
-                    self.token_stream.append(While())
+                    token = While()
                 case 'main':
-                    self.token_stream.append(Main())
+                    token = Main()
                 case 'break':
-                    self.token_stream.append(Break())
+                    token = Break()
                 case 'do':
-                    self.token_stream.append(Do())
+                    token = Do()
                 case _:
-                    self.token_stream.append(Identifier(identifier))
+                    token = Identifier(identifier)
+            
+            self.token_stream.append(token)
+            symbol = Symbol(identifier, token.get_type(), line, line, len(identifier))
+            self.SymbolTable.add_symbol(symbol)
 
         elif success_state == 4:
-            self.token_stream.append(Number(identifier))
+            token = Number(identifier)
+            symbol = Symbol(identifier, token.get_type(), line, line, len(identifier))
+            self.token_stream.append(token)
+            self.SymbolTable.add_symbol(symbol)
+
         elif success_state == 12:
-            self.token_stream.append(Real(identifier))
+            token = Real(identifier)
+            symbol = Symbol(identifier, token.get_type(), line, line, len(identifier))
+            self.token_stream.append(token)
+            self.SymbolTable.add_symbol(symbol)
+
         elif success_state == 2:
-            self.token_stream.append(Divide())
+            token = Divide()
+            symbol = Symbol(identifier, token.get_type(), line, line, len(identifier))
+            self.token_stream.append(token)
+            self.SymbolTable.add_symbol(symbol)
         
+    def print_symbol_table(self):
+        self.SymbolTable.display()

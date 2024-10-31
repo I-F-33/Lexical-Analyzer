@@ -9,7 +9,7 @@ class Token:
         return self.token_type.name
     
     def get_type(self):
-        return self.token_type
+        return self.token_type.name
     
 
 
