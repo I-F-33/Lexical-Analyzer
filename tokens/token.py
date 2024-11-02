@@ -22,9 +22,6 @@ class Identifier(Token):
     def __str__(self):
         return str(self.value)
 
-    def __repr__(self):
-        return f"{super().get_type().name}({self.value})"
-
 class Number(Token):
     
     def __init__(self, value):
@@ -34,9 +31,6 @@ class Number(Token):
     def __str__(self):
             return str(self.value)
 
-    def __repr__(self):
-        return f"{super().get_type().name}({self.value})"
-
 class Comment(Token):
          
     def __init__(self):
@@ -44,9 +38,6 @@ class Comment(Token):
     
     def __str__(self):
         return super().get_type().name
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
 
 class Left_paren(Token):
 
@@ -55,10 +46,6 @@ class Left_paren(Token):
     
     def __str__(self):
         return "("
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Right_paren(Token):
      
@@ -67,10 +54,6 @@ class Right_paren(Token):
     
     def __str__(self):
         return ")"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-        
 
 class Left_bracket(Token):
         
@@ -79,10 +62,6 @@ class Left_bracket(Token):
     
     def __str__(self):
         return "["
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-        
 
 class Right_bracket(Token):
             
@@ -91,10 +70,6 @@ class Right_bracket(Token):
     
     def __str__(self):
         return "]"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Left_brace(Token):
             
@@ -103,10 +78,6 @@ class Left_brace(Token):
             
     def __str__(self):
         return "{"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-            
 
 class Right_brace(Token):
                 
@@ -116,9 +87,6 @@ class Right_brace(Token):
     def __str__(self):
         return "}"
     
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 class Dot(Token):
       
     def __init__(self):
@@ -126,10 +94,6 @@ class Dot(Token):
         
     def __str__(self):
         return "."
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Plus(Token):
             
@@ -138,9 +102,6 @@ class Plus(Token):
             
     def __str__(self):
         return "+"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
 
 class Minus(Token):
                 
@@ -149,10 +110,6 @@ class Minus(Token):
                 
     def __str__(self):
         return "-"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Multiply(Token):
                     
@@ -161,10 +118,6 @@ class Multiply(Token):
                     
     def __str__(self):
         return "*"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Divide(Token):
                         
@@ -173,10 +126,6 @@ class Divide(Token):
                         
     def __str__(self):
         return "/"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Modulus(Token):
                             
@@ -185,10 +134,6 @@ class Modulus(Token):
                             
     def __str__(self):
         return "%"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Less_than(Token):
                                 
@@ -197,10 +142,6 @@ class Less_than(Token):
                                 
     def __str__(self):
         return "<"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Greater_than(Token):
                                     
@@ -209,10 +150,6 @@ class Greater_than(Token):
                                     
     def __str__(self):
         return ">"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Assignment(Token):
                                         
@@ -221,10 +158,6 @@ class Assignment(Token):
                                         
     def __str__(self):
         return "="
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Semicolon(Token):
                                             
@@ -233,10 +166,6 @@ class Semicolon(Token):
                                             
     def __str__(self):
         return ";"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Comma(Token):
                                                 
@@ -245,10 +174,6 @@ class Comma(Token):
                                                 
     def __str__(self):
         return ","
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Increment(Token):
                                                     
@@ -256,11 +181,7 @@ class Increment(Token):
         super().__init__(Token_type.INCREMENT)
                                                     
     def __str__(self):
-        return "++"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
+        return "++" 
 
 class Decrement(Token):
                                                         
@@ -269,10 +190,6 @@ class Decrement(Token):
                                                         
     def __str__(self):
         return "--"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Less_than_eq(Token):
                                                             
@@ -281,10 +198,6 @@ class Less_than_eq(Token):
                                                             
     def __str__(self):
         return "<="
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Greater_than_eq(Token):
                                                                 
@@ -293,10 +206,6 @@ class Greater_than_eq(Token):
                                                                 
     def __str__(self):
         return ">="
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Logic_equal(Token):
 
@@ -306,9 +215,6 @@ class Logic_equal(Token):
     def __str__(self):
         return "=="
 
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 class Logic_and(Token):
 
     def __init__(self):
@@ -317,10 +223,6 @@ class Logic_and(Token):
     def __str__(self):
         return "&&"
     
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
-
 class Logic_or(Token):
 
     def __init__(self):
@@ -328,10 +230,6 @@ class Logic_or(Token):
     
     def __str__(self):
         return "||"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Logic_not(Token):
 
@@ -339,11 +237,7 @@ class Logic_not(Token):
         super().__init__(Token_type.LOGIC_NOT)
     
     def __str__(self):
-        return "!"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
+        return "!"    
 
 class Bit_and(Token):
 
@@ -352,10 +246,6 @@ class Bit_and(Token):
     
     def __str__(self):
         return "&"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Bit_or(Token):
 
@@ -364,10 +254,6 @@ class Bit_or(Token):
     
     def __str__(self):
         return "|"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Basic(Token):
 
@@ -377,10 +263,6 @@ class Basic(Token):
     
     def __str__(self):
         return str(self.value)
-    
-    def __repr__(self):
-        return f"{super().get_type().name}({self.value})"
-
 
 class If(Token):
 
@@ -389,10 +271,6 @@ class If(Token):
         
     def __str__(self):
         return "if"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Else(Token):
 
@@ -401,10 +279,6 @@ class Else(Token):
     
     def __str__(self):
         return "else"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class While(Token):
 
@@ -413,10 +287,6 @@ class While(Token):
     
     def __str__(self):
         return "while"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
 
 class Break(Token):
 
@@ -425,10 +295,6 @@ class Break(Token):
     
     def __str__(self):
         return "break"
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Main(Token):
 
@@ -438,10 +304,6 @@ class Main(Token):
     def __str__(self):
         return "main"
 
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
-
 class Do(Token):
 
     def __init__(self):
@@ -450,10 +312,6 @@ class Do(Token):
     def __str__(self):
         return "do"
 
-    def __repr__(self):
-        return f"{super().get_type().name}"
-
-
 class Logical_not_equal(Token):
 
     def __init__(self):
@@ -461,10 +319,6 @@ class Logical_not_equal(Token):
     
     def __str__(self):
         return "!="
-    
-    def __repr__(self):
-        return f"{super().get_type().name}"
-    
 
 class Real(Token):
 
@@ -474,6 +328,3 @@ class Real(Token):
     
     def __str__(self):
         return str(self.value)
-
-    def __repr__(self):
-        return f"{super().get_type().name}({self.value})"
