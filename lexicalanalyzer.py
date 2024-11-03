@@ -325,6 +325,20 @@ class LexicalAnalyzer:
                     token = Break()
                 case 'do':
                     token = Do()
+                case 'return':
+                    token = Return()
+                case 'for':
+                    token = For()
+                case 'unsigned':
+                    token = Unsigned()
+                case 'goto':
+                    token = Goto()
+                case 'continue':
+                    token = Continue()
+                case 'switch':
+                    token = Switch()
+                case 'case':
+                    token = Case()
                 case _:
                     token = Identifier(identifier)
             

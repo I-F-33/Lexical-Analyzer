@@ -1,0 +1,8 @@
+
+    int main()
+    {
+        int variable
+        variable = 10;
+        return 0;
+    }
+    

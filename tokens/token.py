@@ -37,7 +37,7 @@ class Comment(Token):
         super().__init__(Token_type.COMMENT)
     
     def __str__(self):
-        return super().get_type().name
+        return super().get_type()
 
 class Left_paren(Token):
 
@@ -328,3 +328,54 @@ class Real(Token):
     
     def __str__(self):
         return str(self.value)
+    
+class Return(Token):
+
+    def __init__(self):
+        super().__init__(Token_type.RETURN)
+    
+    def __str__(self):
+        return "return"
+    
+class For(Token):
+
+    def __init__(self):
+        super().__init__(Token_type.FOR)
+    
+    def __str__(self):
+        return "for"
+
+class Continue(Token):
+    def __init__(self):
+        super().__init__(Token_type.CONTINUE)
+    
+    def __str__(self):
+        return "continue"
+
+class Unsigned(Token):
+    def __init__(self):
+        super().__init__(Token_type.UNSIGNED)
+    
+    def __str__(self):
+        return "unsigned"
+
+class Goto(Token):
+    def __init__(self):
+        super().__init__(Token_type.GOTO)
+    
+    def __str__(self):
+        return "goto"
+
+class Case(Token):
+    def __init__(self):
+        super().__init__(Token_type.CASE)
+    
+    def __str__(self):
+        return "case"
+
+class Switch(Token):
+    def __init__(self):
+        super().__init__(Token_type.SWITCH)
+    
+    def __str__(self):
+        return "switch"
