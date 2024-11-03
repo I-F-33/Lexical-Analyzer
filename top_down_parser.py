@@ -33,12 +33,6 @@ class Parser:
         if print_flag:
             print(f"Stack: {self.stack}")
 
-    def parse(self):
-        self.stack.append("program")
-        self.parse_program()
-        self.stack.pop()
-        print("Parsing successful.")
-
     def parse_program(self):
         self.stack.append("program")
         self.match(Basic)

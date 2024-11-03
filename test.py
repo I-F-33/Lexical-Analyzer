@@ -197,9 +197,9 @@ if __name__ == "__main__":
     # print("\nTest Case 4:")
     # test_case_4()
 
-    # print("\nTest Case 5:")
-    # test_case_5()
+    print("\nTest Case 5:")
+    test_case_5()
 
-    print("\nTest Case 6:")
-    test_case_6()
+    # print("\nTest Case 6:")
+    # test_case_6()
     
