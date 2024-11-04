@@ -7,6 +7,7 @@ class Grammar:
         self.terminals = set()
         self.left_recursion_removed = {}
 
+    # Calculate FIRST sets
     def calculate_first(self):
         for non_terminal in self.non_terminals:
             self.first_sets[non_terminal] = set()
@@ -17,12 +18,12 @@ class Grammar:
             for non_terminal, production in self.productions.items():
                 for prod in production:
                     for symbol in prod:
-                        if symbol not in self.non_terminals:  # Terminal symbol
+                        if symbol not in self.non_terminals:
                             if symbol not in self.first_sets[non_terminal]:
                                 self.first_sets[non_terminal].add(symbol)
                                 changed = True
                             break
-                        else:  # Non-terminal symbol
+                        else: 
                             if self.first_sets[symbol] - self.first_sets[non_terminal]:
                                 self.first_sets[non_terminal].update(self.first_sets[symbol] - self.first_sets[non_terminal])
                                 changed = True
@@ -30,16 +31,16 @@ class Grammar:
                                 continue
                             break
                     else:
-                        # If production is ε
                         if 'ε' not in self.first_sets[non_terminal]:
                             self.first_sets[non_terminal].add('ε')
                             changed = True
-
+    
+    # Calculate FOLLOW sets
     def calculate_follow(self):
         for non_terminal in self.non_terminals:
             self.follow_sets[non_terminal] = set()
         
-        self.follow_sets[self.non_terminals[0]].add('$')  # Start symbol
+        self.follow_sets[self.non_terminals[0]].add('$')
 
         changed = True
         while changed:
@@ -49,7 +50,6 @@ class Grammar:
                     for symbol in prod:
                         if symbol in self.non_terminals:
                             index = prod.index(symbol)
-                            # Look ahead in the production
                             if index + 1 < len(prod):
                                 next_symbol = prod[index + 1]
                                 if next_symbol in self.non_terminals:
@@ -68,7 +68,7 @@ class Grammar:
                                 if self.follow_sets[non_terminal] - self.follow_sets[symbol]:
                                     self.follow_sets[symbol].update(self.follow_sets[non_terminal] - self.follow_sets[symbol])
                                     changed = True
-
+    # Remove left recursion
     def remove_left_recursion(self):
         new_productions = {}
         for non_terminal, production in self.productions.items():
@@ -76,8 +76,8 @@ class Grammar:
             alpha = []
             beta = []
             for prod in production:
-                if prod[0] == non_terminal:  # Left recursion
-                    alpha.append(prod[1:])  # Remove left recursion
+                if prod[0] == non_terminal:
+                    alpha.append(prod[1:])
                 else:
                     beta.append(prod)
             if alpha:
