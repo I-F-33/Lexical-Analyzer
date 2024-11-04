@@ -102,21 +102,5 @@ def run_test_case(case_number, code):
         print(f"Test Case {case_number} Parsing Error: {e}\n")
 
 if __name__ == "__main__":
-    # print("Test Case 1:")
-    # test_case_1()
-
-    # print("\nTest Case 2:")
-    # test_case_2()
-
-    # print("\nTest Case 3:")
-    # test_case_3()
-
-    # print("\nTest Case 4:")
-    # test_case_4()
-
-    print("\nTest Case 5:")
-    test_case_5()
-
-    # print("\nTest Case 6:")
-    # test_case_6()
-    
+    for case_number, code in test_cases.items():
+        run_test_case(case_number, code)
