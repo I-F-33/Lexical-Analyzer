@@ -118,79 +118,76 @@ Grammar:
                   | -- <loc>
 
 
-FIRST Sets
+FIRST sets:
+FIRST(program) = {basic}
+FIRST(block) = {{}
+FIRST(decls_stmts) = {num, id, real, for, break, basic, if, continue, do, ε, {, return, while}
+FIRST(decl) = {real, num, basic}
+FIRST(array_decl) = {[, ε}
+FIRST(init) = {=, ε}
+FIRST(initializer) = {++, num, (, true, !, id, real, false, -, {, --}
+FIRST(expr_list) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(expr_list_prime) = {,, ε}
+FIRST(type) = {real, num, basic}
+FIRST(type_prime) = {[, ε}
+FIRST(stmt) = {id, break, if, continue, do, for, {, return, while}
+FIRST(if_stmt) = {if}
+FIRST(matched_stmt) = {id, break, if, continue, do, for, {, return, while}
+FIRST(unmatched_stmt) = {id, break, if, continue, do, for, {, return, while}
+FIRST(for_init) = {num, id, ε, real, basic}
+FIRST(for_update) = {++, --, id, ε}
+FIRST(loc) = {id}
+FIRST(loc_prime) = {[, ε}
+FIRST(bool) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(bool_prime) = {||, ε}
+FIRST(join) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(join_prime) = {&&, ε}
+FIRST(equality) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(equality_prime) = {==, ε, !=}
+FIRST(rel) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(rel_prime) = {>=, <, >, ε, <=}
+FIRST(expr) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(expr_prime) = {+, -, ε}
+FIRST(term) = {++, num, (, true, !, id, real, false, -, --}
+FIRST(term_prime) = {*, /, ε}
+FIRST(unary) = {num, ++, (, true, !, id, real, false, -, --}
+FIRST(factor) = {num, (, true, id, real, false}
+FIRST(increment) = {++, id}
+FIRST(decrement) = {--, id}
 
-FIRST(<program>) = {basic}
-FIRST(<block>) = {'{'}
-FIRST(<decls_stmts>) = {basic, real, num, if, while, for, do, break, continue, return, '{', id, ε}
-FIRST(<decl>) = {basic, real, num}
-FIRST(<array_decl>) = {'[', ε}
-FIRST(<init>) = {'=', ε}
-FIRST(<initializer>) = {'{', num, real, true, false, id, '('}
-FIRST(<expr_list>) = {num, real, true, false, id, '('}
-FIRST(<expr_list_prime>) = {',', ε}
-FIRST(<type>) = {num, real, basic}
-FIRST(<type_prime>) = {'[', ε}
-FIRST(<stmt>) = {if, while, for, do, break, continue, return, '{', id}
-FIRST(<if_stmt>) = {if}
-FIRST(<matched_stmt>) = {if, while, for, do, break, continue, return, '{', id}
-FIRST(<unmatched_stmt>) = {if, while, for, do, break, continue, return, '{', id}
-FIRST(<for_init>) = {basic, real, num, id, ε}
-FIRST(<for_update>) = {id, ++, --, ε}
-FIRST(<loc>) = {id}
-FIRST(<loc_prime>) = {'[', ε}
-FIRST(<bool>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<bool_prime>) = {||, ε}
-FIRST(<join>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<join_prime>) = {&&, ε}
-FIRST(<equality>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<equality_prime>) = {==, !=, ε}
-FIRST(<rel>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<rel_prime>) = {'<', '<=', '>=', '>', ε}
-FIRST(<expr>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<expr_prime>) = {'+', '-', ε}
-FIRST(<term>) = {num, real, true, false, id, '(', '!', '-'}
-FIRST(<term_prime>) = {'*', '/', ε}
-FIRST(<unary>) = {'!', '-', num, real, true, false, id, '(', ++, --}
-FIRST(<factor>) = {'(', id, num, real, true, false}
-FIRST(<increment>) = {id, ++}
-FIRST(<decrement>) = {id, --}
-
-
-FOLLOW Sets
-
-FOLLOW(<program>) = {$}
-FOLLOW(<block>) = {$, else}
-FOLLOW(<decls_stmts>) = {'}'}
-FOLLOW(<decl>) = {basic, real, num, if, while, for, do, break, continue, return, '{', id, '}'}
-FOLLOW(<array_decl>) = {'=', ';'}
-FOLLOW(<init>) = {';'}
-FOLLOW(<initializer>) = {';'}
-FOLLOW(<expr_list>) = {'}'}
-FOLLOW(<expr_list_prime>) = {'}'}
-FOLLOW(<type>) = {id}
-FOLLOW(<type_prime>) = {id}
-FOLLOW(<stmt>) = {else, basic, real, num, if, while, for, do, break, continue, return, '{', id, '}'}
-FOLLOW(<if_stmt>) = {basic, real, num, if, while, for, do, break, continue, return, '{', id, '}', else}
-FOLLOW(<matched_stmt>) = {basic, real, num, if, while, for, do, break, continue, return, '{', id, '}', else}
-FOLLOW(<unmatched_stmt>) = {basic, real, num, if, while, for, do, break, continue, return, '{', id, '}', else}
-FOLLOW(<for_init>) = {';'}
-FOLLOW(<for_update>) = {')'}
-FOLLOW(<loc>) = {'++', '--', '=', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', ']', ';', ')', ','}
-FOLLOW(<loc_prime>) = {'++', '--', '=', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', ']', ';', ')', ','}
-FOLLOW(<bool>) = {')', ']', ';', ','}
-FOLLOW(<bool_prime>) = {')', ']', ';', ','}
-FOLLOW(<join>) = {||, ')', ']', ';', ','}
-FOLLOW(<join_prime>) = {')', ']', ';', ','}
-FOLLOW(<equality>) = {&&, '||', ')', ']', ';', ','}
-FOLLOW(<equality_prime>) = {&&, '||', ')', ']', ';', ','}
-FOLLOW(<rel>) = {==, !=, &&, '||', ')', ']', ';', ','}
-FOLLOW(<rel_prime>) = {==, !=, &&, '||', ')', ']', ';', ','}
-FOLLOW(<expr>) = {'<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<expr_prime>) = {'<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<term>) = {'+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<term_prime>) = {'+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<unary>) = {'*', '/', '+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<factor>) = {'*', '/', '+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<increment>) = {'*', '/', '+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
-FOLLOW(<decrement>) = {'*', '/', '+', '-', '<', '>', '<=', '>=', '==', '!=', &&, '||', ')', ']', ';', ','}
+FOLLOW sets:
+FOLLOW(program) = {$}
+FOLLOW(block) = {}, num, $, id, real, else, break, basic, if, continue, do, ε, for, {, return, while}
+FOLLOW(decls_stmts) = {}}
+FOLLOW(decl) = {}, num, id, real, for, break, basic, if, continue, ;, do, ε, {, return, while}
+FOLLOW(array_decl) = {}, num, id, real, for, break, basic, if, continue, ;, return, do, ε, {, =, while}
+FOLLOW(init) = {;}
+FOLLOW(initializer) = {;}
+FOLLOW(expr_list) = {}}
+FOLLOW(expr_list_prime) = {}}
+FOLLOW(type) = {id}
+FOLLOW(type_prime) = {id}
+FOLLOW(stmt) = {}, num, id, real, for, else, break, basic, if, continue, do, ε, {, return, while}
+FOLLOW(if_stmt) = {}, num, id, real, for, else, break, basic, if, continue, do, ε, {, return, while}
+FOLLOW(matched_stmt) = {}, num, id, real, for, else, break, basic, if, continue, do, ε, {, return, while}
+FOLLOW(unmatched_stmt) = {}, num, id, real, for, else, break, basic, if, continue, do, ε, {, return, while}
+FOLLOW(for_init) = {;}
+FOLLOW(for_update) = {)}
+FOLLOW(loc) = {}, ++, ], !=, ;, <, *, /, ,, -, >, ε, =, <=, --, ), ==, >=, ||, +, &&}
+FOLLOW(loc_prime) = {}, ++, ], !=, ;, <, *, /, ,, -, >, ε, =, <=, ), ==, >=, ||, &&, +, --}
+FOLLOW(bool) = {], ), ;}
+FOLLOW(bool_prime) = {], ;, )}
+FOLLOW(join) = {], ), ε, ||, ;}
+FOLLOW(join_prime) = {], ), ε, ||, ;}
+FOLLOW(equality) = {], ), ε, &&, ||, ;}
+FOLLOW(equality_prime) = {], ), ε, &&, ||, ;}
+FOLLOW(rel) = {], ), !=, ==, ||, ;, ε, &&}
+FOLLOW(rel_prime) = {], ), !=, ==, ||, ;, ε, &&}
+FOLLOW(expr) = {}, ], ), !=, ==, >=, ||, ;, <, ,, >, ε, &&, <=}
+FOLLOW(expr_prime) = {}, ], ), !=, ==, >=, ||, ;, <, ,, >, ε, &&, <=}
+FOLLOW(term) = {}, ], !=, ;, <, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
+FOLLOW(term_prime) = {}, ], !=, ;, <, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
+FOLLOW(unary) = {}, ], !=, ;, <, *, /, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
+FOLLOW(factor) = {}, ], !=, ;, <, *, /, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
+FOLLOW(increment) = {}, ], !=, ;, <, *, /, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
+FOLLOW(decrement) = {}, ], !=, ;, <, *, /, ,, -, >, ε, <=, ), ==, >=, ||, +, &&}
