@@ -40,3 +40,11 @@ class Token_type(Enum):
     DO = 37
     LOGICAL_NOT_EQUAL = 38
     REAL = 39
+    RETURN = 40
+    FOR = 41
+    CONTINUE = 42
+    UNSIGNED = 43
+    GOTO = 44
+    CASE = 45
+    SWITCH = 46
+

@@ -10,4 +10,4 @@ echo "\n========================================================================
 
 # Execute test cases
 echo "~~~ Running Test Cases... ~~~\n"
-python3 testcase2.py
+python3 test.py
