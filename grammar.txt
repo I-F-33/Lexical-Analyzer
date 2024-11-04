@@ -119,6 +119,7 @@ Grammar:
 
 
 FIRST sets:
+
 FIRST(program) = {basic}
 FIRST(block) = {{}
 FIRST(decls_stmts) = {num, id, real, for, break, basic, if, continue, do, ε, {, return, while}
@@ -156,6 +157,7 @@ FIRST(increment) = {++, id}
 FIRST(decrement) = {--, id}
 
 FOLLOW sets:
+
 FOLLOW(program) = {$}
 FOLLOW(block) = {}, num, $, id, real, else, break, basic, if, continue, do, ε, for, {, return, while}
 FOLLOW(decls_stmts) = {}}
