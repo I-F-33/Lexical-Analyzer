@@ -50,7 +50,6 @@ class Parser:
         self.pop_stack()
 
     def parse_block_double_prime(self):
-        """ Matches the rules of Block'' """
         self.stack.append("block''")
         if isinstance(self.current_token, Basic):
             self.parse_decl()
@@ -61,7 +60,6 @@ class Parser:
         self.pop_stack()
 
     def parse_block_prime(self):
-        """ Matches the rules of Block' """
         self.stack.append("block'")
         if isinstance(self.current_token, Right_brace):
             return  # Epsilon rule
