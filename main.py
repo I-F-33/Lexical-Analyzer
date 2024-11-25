@@ -1,4 +1,5 @@
 import lexicalanalyzer as la
+import symtable as st
 
 def main():
     lexer = la.LexicalAnalyzer()
@@ -8,9 +9,7 @@ def main():
 
     token_stream = lexer.get_token_stream()
 
-    print(token_stream)
-
-    
+    print(token_stream)  
 
 
 if __name__ == '__main__':

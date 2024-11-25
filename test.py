@@ -1,5 +1,7 @@
 from lexicalanalyzer import LexicalAnalyzer
 from top_down_parser import Parser
+from semantic_analyzer import SyntaxTree
+from abstract_st import SyntaxTreeToAST
 
 # Define test cases
 test_cases = {
@@ -93,13 +95,30 @@ def run_test_case(case_number, code):
     #    print(token.to_string())
     #print()
     
-    # Parser
-    parser = Parser(tokens)
+    # Concrete Syntax Tree
+    parser = SyntaxTree(tokens)
     try:
-        parser.parse()
+        cst = parser.parse()
         print(f"Test Case {case_number} Parsed Successfully\n")
+        print("Concrete Syntax Tree:")
+        print(cst)
+        
+        # Semantic Analyzer
+        semantic_analyzer = SyntaxTree(cst)
+        semantic_analyzer.analyze()
+        print(f"Test Case {case_number} Semantic Analysis Successful\n")
+
+        # Abstract Syntax Tree Transformation
+        transformer = SyntaxTreeToAST(cst)
+        ast = transformer.transform()
+        print("Abstract Syntax Tree:")
+        print(ast)
+        
     except Exception as e:
-        print(f"Test Case {case_number} Parsing Error: {e}\n")
+        print(f"Test Case {case_number} Error: {e}\n")
+
+    # Abstract Syntax Tree
+
 
 if __name__ == "__main__":
     for case_number, code in test_cases.items():
