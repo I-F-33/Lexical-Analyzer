@@ -109,8 +109,7 @@ class Parser:
         if isinstance(self.current_token, (If, While, Do, Return, Break, Left_brace, Identifier)):
             self.parse_stmt()
             self.parse_stmts()
-        else:
-            self.pop_stack()  # Epsilon rule
+        self.pop_stack()  # Epsilon rule
 
     def parse_stmt(self):
         self.stack.append("stmt")
@@ -285,3 +284,4 @@ class Parser:
         self.stack.append('$')
         self.parse_program()
         print("Parsing successful.")
+        print(f"Stack: {self.stack}")
