@@ -30,13 +30,14 @@ class Symbol:
 
     _type_counters = {}
 
-    def __init__(self, lexeme, token_type, line_number, char_start, length):
+    def __init__(self, lexeme, token_type, line_number, char_start, length, block_number):
         self.unqiue_id = self._generate_unique_id(token_type)
         self.lexeme = lexeme
         self.token_type = token_type
         self.line_number = line_number
         self.char_start = char_start
         self.length = length
+        self.block_number = block_number
     
     def _generate_unique_id(self, token_type):
         if token_type in self._type_counters:
