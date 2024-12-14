@@ -117,10 +117,16 @@ class LexicalAnalyzer:
                             self.token_stream.append(token)
 
                         case '{':
+                            self.SymbolTable.enter_scope()
                             token = Left_brace()
                             self.token_stream.append(token)
 
                         case '}':
+                            try:
+                                self.SymbolTable.exit_scope()
+                            except Exception as e:
+                                print(f'Error: {e} at line {line} position {line_pos}')
+                                
                             token = Right_brace()
                             self.token_stream.append(token)
 

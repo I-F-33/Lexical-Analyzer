@@ -1,30 +1,54 @@
 # This file contains the SymbolTable class and the Symbol class
 class SymbolTable:
     _instance = None  # create singleton instance
-    _counter = 0
 
     def __new__(cls):
         # Ensures only one instance of SymbolTable exists
         if cls._instance is None:
             cls._instance = super(SymbolTable, cls).__new__(cls)
-            cls._instance.table = {}  # Initialize the symbol table
+            cls._instance.scopes = {}
+            cls._instance.current_scope_stack = []
+            cls._instance.black_counter = 0
         return cls._instance
 
-    def add_symbol(self, symbol):
-        SymbolTable._counter += 1
-        self.table[SymbolTable._counter] = symbol
+    def enter_scope(self):
+        self.black_counter += 1
+        self.scopes[self.black_counter] = {}
+        self.current_scope_stack.append(self.black_counter)
+    
+    def exit_scope(self):
+        if len(self.current_scope_stack) > 1:
+            self.current_scope_stack.pop()
+        else:
+            raise Exception("Cannot exit global scope")
+        
 
+    def add_symbol(self, symbol):
+        # Add symbol to the current scope
+        if not self.current_scope_stack:
+            raise Exception("No scope to add symbol to")
+        current_scope = self.current_scope_stack[-1]
+        scope_symbols = self.scopes[current_scope]
+
+        if symbol.lexeme in scope_symbols:
+            raise Exception(f"Symbol {symbol.lexeme} already exists in the current scope")
+        
+        symbol.block_number = current_scope
+        scope_symbols[symbol.lexeme] = symbol
 
     def lookup(self, lexeme):
-        # Search for the symbol by lexeme in the table
-        for symbol in self.table.values():
-            if symbol.lexeme == lexeme:
-                return symbol
+        for block_number in reversed(self.current_scope_stack):
+            scope_symbols = self.scopes[block_number]
+            if lexeme in scope_symbols:
+                return scope_symbols[lexeme]
         return None
 
     def display(self):
-        for symbol in self.table.values():
-            print(symbol)
+        for block_number in self.current_scope_stack:
+            print(f"Block {block_number}")
+            for symbol in self.scopes[block_number].values():
+                print(symbol)
+            print("\n")
 
 class Symbol:
 
