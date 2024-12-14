@@ -126,7 +126,7 @@ class LexicalAnalyzer:
                                 self.SymbolTable.exit_scope()
                             except Exception as e:
                                 print(f'Error: {e} at line {line} position {line_pos}')
-                                
+
                             token = Right_brace()
                             self.token_stream.append(token)
 
@@ -318,11 +318,19 @@ class LexicalAnalyzer:
                 case 'case':
                     token = Case()
                 case _:
-                    token = Identifier(identifier)
+                    if self.token_stream and isinstance(self.token_stream[-1], Basic):
+                        # Previous token was a type keyword -> declaration
+                        token = Identifier(identifier)
+                        symbol = Symbol(identifier, token.get_type(), line, line_pos, len(identifier))
+                        self.SymbolTable.add_symbol(symbol)  # Add to symbol table
+                    else:
+                        # Variable usage -> lookup
+                        if not self.SymbolTable.lookup(identifier):
+                            raise RuntimeError(f"Undeclared variable '{identifier}' used at line {line}.")
+                        token = Identifier(identifier)
+
             
             self.token_stream.append(token)
-            symbol = Symbol(identifier, token.get_type(), line, line_pos, len(identifier))
-            self.SymbolTable.add_symbol(symbol)
 
         elif success_state == 4:
             token = Number(identifier)

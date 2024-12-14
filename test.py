@@ -88,6 +88,7 @@ def run_test_case(case_number, code):
     # Lex for tokens
     lexer.lex(filename)
     tokens = lexer.get_token_stream()
+    lexer.print_symbol_table()
 
     # Output for tokens
     #print(f"Test Case {case_number} Tokens:")

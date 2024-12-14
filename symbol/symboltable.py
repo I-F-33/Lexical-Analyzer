@@ -6,15 +6,15 @@ class SymbolTable:
         # Ensures only one instance of SymbolTable exists
         if cls._instance is None:
             cls._instance = super(SymbolTable, cls).__new__(cls)
-            cls._instance.scopes = {}
-            cls._instance.current_scope_stack = []
-            cls._instance.black_counter = 0
+            cls._instance.scopes = {0: {}}  # Global scope
+            cls._instance.block_counter = 0
+            cls._instance.current_scope_stack = [0]
         return cls._instance
 
     def enter_scope(self):
-        self.black_counter += 1
-        self.scopes[self.black_counter] = {}
-        self.current_scope_stack.append(self.black_counter)
+        self.block_counter += 1
+        self.scopes[self.block_counter] = {}
+        self.current_scope_stack.append(self.block_counter)
     
     def exit_scope(self):
         if len(self.current_scope_stack) > 1:
@@ -25,8 +25,6 @@ class SymbolTable:
 
     def add_symbol(self, symbol):
         # Add symbol to the current scope
-        if not self.current_scope_stack:
-            raise Exception("No scope to add symbol to")
         current_scope = self.current_scope_stack[-1]
         scope_symbols = self.scopes[current_scope]
 
@@ -41,25 +39,33 @@ class SymbolTable:
             scope_symbols = self.scopes[block_number]
             if lexeme in scope_symbols:
                 return scope_symbols[lexeme]
-        return None
+        raise Exception(f"Symbol {lexeme} not found in the current scope")
+
+    def flatten(self):
+        flat = {}
+        for block_number, scope_symbols in self.scopes.items():
+            flat.update(scope_symbols)
+        return flat
 
     def display(self):
-        for block_number in self.current_scope_stack:
-            print(f"Block {block_number}")
-            for symbol in self.scopes[block_number].values():
-                print(symbol)
+        for block_number, scope_symbols in self.scopes.items():
+            print(f"Block {block_number}:")
+            if scope_symbols:
+                for symbol in scope_symbols.values():
+                    print(symbol)
+            else:
+                print("  (No symbols in this block)")
             print("\n")
-
 class Symbol:
 
     _type_counters = {}
 
-    def __init__(self, lexeme, token_type, line_number, char_start, length, block_number):
+    def __init__(self, lexeme, token_type, line_number, column, length, block_number = 0):
         self.unqiue_id = self._generate_unique_id(token_type)
         self.lexeme = lexeme
         self.token_type = token_type
         self.line_number = line_number
-        self.char_start = char_start
+        self.char_start = column
         self.length = length
         self.block_number = block_number
     
@@ -72,4 +78,4 @@ class Symbol:
     
 
     def __str__(self):
-        return f"{self.unqiue_id} {self.lexeme} {self.token_type} {self.line_number} {self.char_start} {self.length}"
+        return f"{self.unqiue_id} {self.lexeme} {self.token_type} Line: {self.line_number} Col: {self.char_start} Len: {self.length} Block: {self.block_number}"
