@@ -67,7 +67,7 @@ class SyntaxTreeToAST:
         elif node.name == "block":
             block_node = BlockNode()
             for child in node.children:
-                if isinstance(child, Node):  # Skip tokens
+                if isinstance(child, ASTNode):  # Skip tokens
                     block_node.add_child(self._transform_node(child))
             return block_node
 
@@ -85,7 +85,7 @@ class SyntaxTreeToAST:
             elif first_child.name == "Return":
                 value = self._transform_node(node.children[1])      # Value
                 return ReturnNode(value)
-            elif isinstance(first_child, Node) and first_child.name == "Identifier":
+            elif isinstance(first_child, ASTNode) and first_child.name == "Identifier":
                 var_name = first_child.name
                 expression = self._transform_node(node.children[2])
                 return AssignNode(var_name, expression)
