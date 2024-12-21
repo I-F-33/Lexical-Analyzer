@@ -1,14 +1,17 @@
-int main(void)
-{
-    float myFloat; 
-    int counter;
-    myFloat = 0.01; 
-    counter = 0;
-    while (counter < 5)
+int main()
     {
-        counter = counter + 1;
-        myFloat = myFloat * 3;
+        int a = 10;
+        int b = 8;
+        int c;
+        c = a + b;
+        if (c < 20)
+        {
+            c = c + 5;
+        }
+        else
+        {
+            c = c - 5;
+        }
+        return 0;
+
     }
-    counter > myFloat;
-    return 0;
-}
