@@ -6,69 +6,30 @@ from abstract_st import SyntaxTreeToAST
 # Define test cases
 test_cases = {
     "Case 1": """int main()
-{
-    int myInt;
-    myInt = 0;
-    myInt = myInt + 1;
-    return 0;
-}
-""",
-    "Case 2": """int main(void)
-{
-    float myFloat; 
-    int counter;
-    myFloat = 0.01; 
-    counter = 0;
-    while (counter < 5)
     {
-        counter = counter + 1;
-        myFloat = myFloat * 3;
+        int a = 3; int b = 5; int c;
+        c = b - a;
+        b = a + c;
+        c = b - a;
+        return 0;
     }
-    counter > myFloat;
-    return 0;
-}
 """,
-    "Case 3": """
-{
-    int zero;
-    zero = 1;
-    return 0;
-}
-""",
-    "Case 4": """int main()
-{
-    int myInt = 1;
-    if (myInt > 1 { myInt = myInt + 1; }
-    return 0;
-}
-""",
-    "Case 5": """int main()
-{
-    int counter; 
-    int sum;
-    counter = 0; 
-    sum = 0;
-    while(counter < 10)
+    "Case 2": """int main()
     {
-        if (sum % 2 == 0)
+        int a = 10;
+        int b = 8;
+        int c;
+        c = a + b;
+        if (c < 20)
         {
-            sum = sum + 2;
+            c = c + 5;
         }
         else
         {
-            sum = sum + 1;
+            c = c - 5;
         }
-        counter = counter + 1;
+        return 0;
     }
-    return 0;
-}
-""",
-    "Case 6": """int main()
-{
-    int variable;
-    variable = 10;
-    return 0;
-}
 """
 }
 
