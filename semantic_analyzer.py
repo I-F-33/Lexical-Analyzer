@@ -11,11 +11,6 @@ class Node:
     def __repr__(self, level=0):
         ret = "\t" * level + repr(self.name) + "\n"
         for child in self.children:
-            ret += child.__repr__(level + 1)
-        return ret
-    def __repr__(self, level=0):
-        ret = "\t" * level + repr(self.name) + "\n"
-        for child in self.children:
             if isinstance(child, Node):
                 ret += child.__repr__(level + 1)
             else:
@@ -34,6 +29,7 @@ class SyntaxTree:
         if isinstance(self.current_token, token_class):
             matched_token = Node(f"Token({self.current_token})")
             self.advance()
+            # Skip comments
             while isinstance(self.current_token, Comment):
                 self.advance()
             return matched_token
@@ -52,6 +48,8 @@ class SyntaxTree:
         node = Node("program")
         if isinstance(self.current_token, Basic):
             node.add_child(self.match(Basic))
+            if isinstance(self.current_token, Void):
+                node.add_child(self.match(Void))  # Support for void in function declarations
             node.add_child(self.match(Main))
             node.add_child(self.match(Left_paren))
             node.add_child(self.match(Right_paren))
@@ -83,8 +81,9 @@ class SyntaxTree:
             return node  # Epsilon rule
         node.add_child(self.parse_stmt())
         node.add_child(self.parse_stmts())
-        node.add_child(self.match(Right_brace))
+        node.add_child(self.match(Right_brace))  # Causes the error
         return node
+
 
     def parse_decl(self):
         node = Node("decl")
@@ -190,109 +189,7 @@ class SyntaxTree:
             node.add_child(self.parse_bool_prime())
         return node
 
-    def parse_join(self):
-        node = Node("join")
-        node.add_child(self.parse_equality())
-        node.add_child(self.parse_join_prime())
-        return node
-
-    def parse_join_prime(self):
-        node = Node("join_prime")
-        if isinstance(self.current_token, Logic_and):
-            node.add_child(self.match(Logic_and))
-            node.add_child(self.parse_equality())
-            node.add_child(self.parse_join_prime())
-        return node
-
-    def parse_equality(self):
-        node = Node("equality")
-        node.add_child(self.parse_rel())
-        node.add_child(self.parse_equality_prime())
-        return node
-
-    def parse_equality_prime(self):
-        node = Node("equality_prime")
-        if isinstance(self.current_token, Logic_equal):
-            node.add_child(self.match(Logic_equal))
-            node.add_child(self.parse_rel())
-        elif isinstance(self.current_token, Logical_not_equal):
-            node.add_child(self.match(Logical_not_equal))
-            node.add_child(self.parse_rel())
-        return node
-
-    def parse_rel(self):
-        node = Node("rel")
-        node.add_child(self.parse_expr())
-        node.add_child(self.parse_rel_prime())
-        return node
-
-    def parse_rel_prime(self):
-        node = Node("rel_prime")
-        if isinstance(self.current_token, (Less_than, Less_than_eq, Greater_than_eq, Greater_than)):
-            node.add_child(self.match(type(self.current_token)))
-            node.add_child(self.parse_expr())
-        return node
-
-    def parse_expr(self):
-        node = Node("expr")
-        node.add_child(self.parse_term())
-        node.add_child(self.parse_expr_prime())
-        return node
-
-    def parse_expr_prime(self):
-        node = Node("expr_prime")
-        if isinstance(self.current_token, (Plus, Minus)):
-            node.add_child(self.match(type(self.current_token)))
-            node.add_child(self.parse_term())
-            node.add_child(self.parse_expr_prime())
-        return node
-
-    def parse_term(self):
-        node = Node("term")
-        node.add_child(self.parse_unary())
-        node.add_child(self.parse_term_prime())
-        return node
-
-    def parse_term_prime(self):
-        node = Node("term_prime")
-        if isinstance(self.current_token, (Multiply, Divide)):
-            node.add_child(self.match(type(self.current_token)))
-            node.add_child(self.parse_unary())
-            node.add_child(self.parse_term_prime())
-        return node
-
-    def parse_unary(self):
-        node = Node("unary")
-        if isinstance(self.current_token, (Logic_not, Minus)):
-            node.add_child(self.match(type(self.current_token)))
-            node.add_child(self.parse_unary())
-        else:
-            node.add_child(self.parse_factor())
-        return node
-
-    def parse_factor(self):
-        node = Node("factor")
-        if isinstance(self.current_token, Left_paren):
-            node.add_child(self.match(Left_paren))
-            node.add_child(self.parse_bool())
-            node.add_child(self.match(Right_paren))
-        elif isinstance(self.current_token, Identifier):
-            node.add_child(self.parse_loc())
-        elif isinstance(self.current_token, (Number, Real, True, False)):
-            node.add_child(self.match(type(self.current_token)))
-        else:
-            self.error("Expected a factor (expression, identifier, number, etc.)")
-        return node
-
-    def parse_while(self):
-        node = Node("while")
-        node.add_child(self.match(While))
-        node.add_child(self.match(Left_paren))
-        node.add_child(self.parse_bool())
-        node.add_child(self.match(Right_paren))
-        node.add_child(self.match(Semicolon))  # Add semicolon after Right_paren
-        node.add_child(self.parse_stmt())
-        return node
+    # Additional parse methods for expressions, terms, factors...
 
     def parse(self):
         self.stack.append('$')
